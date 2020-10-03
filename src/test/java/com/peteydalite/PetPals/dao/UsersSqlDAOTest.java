@@ -89,9 +89,10 @@ class UsersSqlDAOTest {
     void createNewUser() {
         List<User> userListBefore = userDao.findAll();
 
-        userDao.createNewUser("NewUser", "test", "User", "test", "test", "test@test.com");
+        boolean newUserCreated = userDao.createNewUser("NewUser", "test", "User", "test", "test", "test@test.com");
         User actual = userDao.findByUsername("NewUser");
 
+        assertEquals(true, newUserCreated);
         assertEquals("NewUser", actual.getUsername());
 
         List<User> userListAfter = userDao.findAll();
