@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS users;
 DROP SEQUENCE IF EXISTS seq_user_id;
 DROP TABLE IF EXISTS photos;
 DROP SEQUENCE IF EXISTS seq_photo_id;
-DROP TABLE IF EXISTS UserToPet;
 DROP TABLE IF EXISTS status;
 DROP TABLE IF EXISTS confirmation;
 DROP TABLE IF EXISTS messages;
@@ -60,14 +59,6 @@ CREATE SEQUENCE seq_pal_id
         NO MINVALUE
         CACHE 1;
 
-CREATE TABLE pets (
-        pet_id int DEFAULT nextval('seq_pet_id') NOT NULL,
-        petname varchar(70) NOT NULL,
-        height int,
-        weight int,
-        color char(70),
-        CONSTRAINT PK_pet PRIMARY KEY (pet_id)
-);
 
 CREATE TABLE users (
         user_id int DEFAULT nextval('seq_user_id') NOT NULL,
@@ -80,11 +71,15 @@ CREATE TABLE users (
         CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
-CREATE TABLE UserToPet (
+CREATE TABLE pets (
+        pet_id int DEFAULT nextval('seq_pet_id') NOT NULL,
         user_id int NOT NULL,
-        pet_id int NOT NULL,
-        CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-        CONSTRAINT FK_pet FOREIGN KEY (pet_id) REFERENCES pets(pet_id)
+        petname varchar(70) NOT NULL,
+        height int,
+        weight int,
+        color char(70),
+        CONSTRAINT PK_pet PRIMARY KEY (pet_id),
+        CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE photos (

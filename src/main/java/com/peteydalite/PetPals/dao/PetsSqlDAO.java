@@ -65,6 +65,19 @@ public class PetsSqlDAO implements PetsDAO{
         return createdPet;
     }
 
+    @Override
+    public List<Pet> getPetsByUserId(Long userId) {
+        List<Pet> petList = new ArrayList<>();
+        String sql = "Select * from pets where user_id = ? ";
+        SqlRowSet result = jdbc.queryForRowSet(sql, userId);
+
+        while(result.next()){
+            Pet pet = mapRowToPet(result);
+            petList.add(pet);
+        }
+        return petList;
+    }
+
     private Pet mapRowToPet(SqlRowSet result){
         Pet temp = new Pet();
         temp.setPet_id(result.getLong("pet_id"));
