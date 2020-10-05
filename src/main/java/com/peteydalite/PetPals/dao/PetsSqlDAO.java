@@ -78,6 +78,15 @@ public class PetsSqlDAO implements PetsDAO{
         return petList;
     }
 
+    @Override
+    public boolean updatePet(Pet pet) {
+        boolean updated = false;
+        String sqlUpdate = "Update pets set petname = ? , height = ?, weight = ?, color = ? where pet_id = ? ";
+        updated = jdbc.update(sqlUpdate, pet.getPetName(), pet.getHeight(), pet.getWeight(), pet.getColor(), pet.getPet_id()) == 1;
+
+        return updated;
+    }
+
     private Pet mapRowToPet(SqlRowSet result){
         Pet temp = new Pet();
         temp.setPet_id(result.getLong("pet_id"));

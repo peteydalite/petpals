@@ -83,6 +83,15 @@ public class UsersSqlDAO implements UsersDAO{
         return createdUser;
     }
 
+    @Override
+    public boolean updateUser(User user) {
+        boolean updated = false;
+        String sqlUpdate = "Update users set username = ?, firstname = ?, lastname = , email = ? where user_id = ? ";
+        updated = jdbc.update(sqlUpdate, user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getId()) == 1;
+
+        return updated;
+    }
+
     private User mapRowToUser( SqlRowSet result){
         User temp = new User();
         temp.setId(result.getLong("user_id"));

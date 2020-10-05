@@ -115,7 +115,9 @@ CREATE TABLE messages (
         message_id int DEFAULT nextval('seq_message_id') NOT NULL,
         user_id int NOT NULL,
         message_description varchar(1000000) NOT NULL,
-        InReplyTo int,
+        In_Reply_To_UserId int,
+        In_Reply_To_MessageId int,
+        datetime timestamp NOT NULL,
         CONSTRAINT PK_message PRIMARY KEY (message_id),
         CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

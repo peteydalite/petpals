@@ -1,18 +1,24 @@
 package com.peteydalite.PetPals.model;
 
+import java.text.DateFormat;
+
 public class Message {
     private Long message_id;
     private Long user_id;
     private String description;
-    private Long inReplayTo;
+    private Long inReplyToUserId;
+    private Long inReplyToMessageId;
+    private DateFormat datetime;
 
     public Message(){}
 
-    public Message(Long message_id, Long user_id, String description, Long inReplayTo) {
+    public Message(Long message_id, Long user_id, String description, Long inReplyToUserId, Long inReplyToMessageId, DateFormat datetime) {
         this.message_id = message_id;
         this.user_id = user_id;
         this.description = description;
-        this.inReplayTo = inReplayTo;
+        this.inReplyToUserId = inReplyToUserId;
+        this.inReplyToMessageId = inReplyToMessageId;
+        this.datetime = datetime;
     }
 
     public Long getMessage_id() {
@@ -39,12 +45,28 @@ public class Message {
         this.description = description;
     }
 
-    public Long getInReplayTo() {
-        return inReplayTo;
+    public Long getInReplyToUserId() {
+        return inReplyToUserId;
     }
 
-    public void setInReplayTo(Long inReplayTo) {
-        this.inReplayTo = inReplayTo;
+    public void setInReplyToUserId(Long inReplyToUserId) {
+        this.inReplyToUserId = inReplyToUserId;
+    }
+
+    public Long getInReplyToMessageId() {
+        return inReplyToMessageId;
+    }
+
+    public void setInReplyToMessageId(Long inReplyToMessageId) {
+        this.inReplyToMessageId = inReplyToMessageId;
+    }
+
+    public DateFormat getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(DateFormat datetime) {
+        this.datetime = datetime;
     }
 }
 
