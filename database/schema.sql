@@ -17,6 +17,8 @@ DROP SEQUENCE IF EXISTS seq_rating_id;
 DROP TABLE IF EXISTS pals;
 DROP SEQUENCE IF EXISTS seq_pal_id;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE SEQUENCE seq_pet_id
         INCREMENT BY 1
         NO MAXVALUE
@@ -61,7 +63,7 @@ CREATE SEQUENCE seq_pal_id
 
 
 CREATE TABLE users (
-        user_id int DEFAULT nextval('seq_user_id') NOT NULL,
+        user_id uuid default uuid_generate_v4() NOT NULL,
         username varchar(70) NOT NULL,
         password_hash varchar(200) NOT NULL,
         role varchar(60) NOT NULL,
@@ -72,8 +74,8 @@ CREATE TABLE users (
 );
 
 CREATE TABLE pets (
-        pet_id int DEFAULT nextval('seq_pet_id') NOT NULL,
-        user_id int NOT NULL,
+        pet_id uuid default uuid_generate_v4() NOT NULL,
+        user_id uuid NOT NULL,
         petname varchar(70) NOT NULL,
         height int,
         weight int,
@@ -83,8 +85,8 @@ CREATE TABLE pets (
 );
 
 CREATE TABLE photos (
-        photo_id int DEFAULT nextval('seq_photo_id') NOT NULL,
-        user_id int NOT NULL,
+        photo_id uuid default uuid_generate_v4() NOT NULL,
+        user_id uuid NOT NULL,
         profile_picture BOOLEAN NOT NULL DEFAULT FALSE,
         src varchar (1000) NOT NULL,
         CONSTRAINT PK_photo PRIMARY KEY (photo_id),
@@ -112,22 +114,22 @@ INSERT INTO confirmation (confirmation_id, description) values (3, 'Cancelled');
 
 
 CREATE TABLE messages (
-        message_id int DEFAULT nextval('seq_message_id') NOT NULL,
-        user_id int NOT NULL,
+        message_id uuid default uuid_generate_v4() NOT NULL,
+        user_id uuid NOT NULL,
         message_description varchar(1000000) NOT NULL,
-        In_Reply_To_UserId int,
-        In_Reply_To_MessageId int,
+        In_Reply_To_UserId uuid,
+        In_Reply_To_MessageId uuid,
         datetime timestamp NOT NULL,
         CONSTRAINT PK_message PRIMARY KEY (message_id),
         CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE PlayDate (
-        playdate_id int DEFAULT nextval('seq_playdate_id') NOT NULL,
+        playdate_id uuid default uuid_generate_v4() NOT NULL,
         status_id int NOT NULL,
         confirmation_id int NOT NULL,
-        from_user int NOT NULL,
-        to_user int,
+        from_user uuid NOT NULL,
+        to_user uuid,
         set_date DATE NOT NULL,
         loc point,
         CONSTRAINT PK_playdate PRIMARY KEY (playdate_id),
@@ -138,10 +140,10 @@ CREATE TABLE PlayDate (
 );
 
 CREATE TABLE ratings (
-        rating_id int DEFAULT nextval('seq_rating_id') NOT NULL,
-        playdate_id int NOT NULL,
-        for_user int NOT NULL,
-        from_user int NOT NULL,
+        rating_id uuid default uuid_generate_v4()NOT NULL,
+        playdate_id uuid NOT NULL,
+        for_user uuid NOT NULL,
+        from_user uuid NOT NULL,
         rating real NOT NULL,
         CONSTRAINT PK_rating PRIMARY KEY (rating_id),
         CONSTRAINT FK_playdate FOREIGN KEY (playdate_id) REFERENCES Playdate(playdate_id),
@@ -150,9 +152,9 @@ CREATE TABLE ratings (
 );
 
 CREATE TABLE pals (
-        pal_id int DEFAULT nextval('seq_pal_id') NOT NULL,
-        from_user int NOT NULL,
-        to_user int NOT NULL,
+        pal_id uuid default uuid_generate_v4() NOT NULL,
+        from_user uuid NOT NULL,
+        to_user uuid NOT NULL,
         status_id int NOT NULL,
         CONSTRAINT PK_pal PRIMARY KEY (pal_id),
         CONSTRAINT FK_fromuser FOREIGN KEY (from_user) REFERENCES users(user_id),
