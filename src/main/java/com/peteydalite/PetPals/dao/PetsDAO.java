@@ -11,7 +11,7 @@ public interface PetsDAO {
     List<Pet> getAllPets();
     Pet getPetById(UUID id);
     List<Pet> getPetByName(String petName);
-    boolean createNewPet(String petName, Optional<Double> height, Optional<Double> weight, Optional<String> color);
-    List<Pet> getPetsByUserId(Long userId);
+    boolean createNewPet(UUID user_id, String petName, Optional<Double> height, Optional<Double> weight, Optional<String> color);
+    List<Pet> getPetsByUserId(UUID userId);
     boolean updatePet(Pet pet);
 }

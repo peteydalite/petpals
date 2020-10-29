@@ -1,6 +1,7 @@
 package com.peteydalite.PetPals.dao;
 
 import com.peteydalite.PetPals.model.Pet;
+import com.peteydalite.PetPals.model.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.springframework.security.core.parameters.P;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +21,7 @@ class PetsSqlDAOTest {
     private static SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
     private JdbcTemplate jdbc;
     private PetsSqlDAO petDao;
+    private UsersSqlDAO userDao;
 
 
     @BeforeEach
@@ -29,9 +32,19 @@ class PetsSqlDAOTest {
         dataSource.setAutoCommit(false);
         jdbc = new JdbcTemplate(dataSource);
         petDao = new PetsSqlDAO(jdbc);
+        userDao = new UsersSqlDAO(jdbc);
 
-        String sqlInsertTest = "Insert into pets (petname) values (?)";
-        jdbc.update(sqlInsertTest,"test");
+        String sqlInsertTest = "Insert into pets (user_id, petname) values (?,?)";
+        List<User> userList = userDao.findAll();
+        UUID userID = null;
+        if(userList.size() > 0){
+            userID = userList.get(0).getId();
+        }else{
+            userDao.createNewUser("NewUser99", "test1", "User", "test99", "test99", "test99@test.com");
+            userID = userDao.findIdByUsername("NewUser99");
+        }
+
+        jdbc.update(sqlInsertTest,userID,"testpuppy");
 
     }
 
@@ -74,7 +87,8 @@ class PetsSqlDAOTest {
     @Test
     void createNewPet() {
         List<Pet> listBefore = petDao.getAllPets();
-        boolean created = petDao.createNewPet("NewPet",null,null,null);
+        List<User> userList = userDao.findAll();
+        boolean created = petDao.createNewPet(userList.get(0).getId(),"NewPet",null,null,null);
         
         List<Pet> listAfter = petDao.getAllPets();
         assertEquals(created, true);

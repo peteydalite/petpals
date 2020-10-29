@@ -57,17 +57,17 @@ public class PetsSqlDAO implements PetsDAO{
     }
 
     @Override
-    public boolean createNewPet(String petName, Optional<Double> height, Optional<Double> weight, Optional<String> color) {
+    public boolean createNewPet(UUID user_id, String petName, Optional<Double> height, Optional<Double> weight, Optional<String> color) {
         boolean createdPet = false;
 
-        String sqlInsert = "Insert into pets (petname, height, weight, color) values (?,?,?,?) ";
-        createdPet = jdbc.update(sqlInsert, petName, height, weight, color) == 1;
+        String sqlInsert = "Insert into pets (user_id, petname, height, weight, color) values (?,?,?,?,?) ";
+        createdPet = jdbc.update(sqlInsert, user_id, petName, height, weight, color) == 1;
 
         return createdPet;
     }
 
     @Override
-    public List<Pet> getPetsByUserId(Long userId) {
+    public List<Pet> getPetsByUserId(UUID userId) {
         List<Pet> petList = new ArrayList<>();
         String sql = "Select * from pets where user_id = ? ";
         SqlRowSet result = jdbc.queryForRowSet(sql, userId);
@@ -91,6 +91,7 @@ public class PetsSqlDAO implements PetsDAO{
     private Pet mapRowToPet(SqlRowSet result){
         Pet temp = new Pet();
         temp.setPet_id((java.util.UUID)result.getObject("pet_id"));
+        temp.setUser_id((java.util.UUID)result.getObject("user_id"));
         temp.setPetName(result.getString("petname"));
         temp.setHeight(result.getDouble("height"));
         temp.setWeight(result.getDouble("weight"));

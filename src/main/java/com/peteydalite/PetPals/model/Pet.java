@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class Pet {
     private UUID pet_id;
+    private UUID user_id;
     private String petName;
     private double height;
     private double weight;
@@ -13,20 +14,23 @@ public class Pet {
 
     }
 
-    public Pet(UUID pet_id, String petName) {
+    public Pet(UUID pet_id, UUID user_id, String petName) {
         this.pet_id = pet_id;
+        this.user_id = user_id;
         this.petName = petName;
     }
 
-    public Pet(UUID pet_id, String petName, double height, double weight) {
+    public Pet(UUID pet_id, UUID user_id, String petName, double height, double weight) {
         this.pet_id = pet_id;
+        this.user_id = user_id;
         this.petName = petName;
         this.height = height;
         this.weight = weight;
     }
 
-    public Pet(UUID pet_id, String petName, double height, double weight, String color) {
+    public Pet(UUID pet_id, UUID user_id, String petName, double height, double weight, String color) {
         this.pet_id = pet_id;
+        this.user_id = user_id;
         this.petName = petName;
         this.height = height;
         this.weight = weight;
@@ -39,6 +43,14 @@ public class Pet {
 
     public void setPet_id(UUID pet_id) {
         this.pet_id = pet_id;
+    }
+
+    public UUID getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(UUID user_id) {
+        this.user_id = user_id;
     }
 
     public String getPetName() {
