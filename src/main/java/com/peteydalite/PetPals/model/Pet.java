@@ -1,7 +1,9 @@
 package com.peteydalite.PetPals.model;
 
+import java.util.UUID;
+
 public class Pet {
-    private Long pet_id;
+    private UUID pet_id;
     private String petName;
     private double height;
     private double weight;
@@ -11,19 +13,19 @@ public class Pet {
 
     }
 
-    public Pet(Long pet_id, String petName) {
+    public Pet(UUID pet_id, String petName) {
         this.pet_id = pet_id;
         this.petName = petName;
     }
 
-    public Pet(Long pet_id, String petName, double height, double weight) {
+    public Pet(UUID pet_id, String petName, double height, double weight) {
         this.pet_id = pet_id;
         this.petName = petName;
         this.height = height;
         this.weight = weight;
     }
 
-    public Pet(Long pet_id, String petName, double height, double weight, String color) {
+    public Pet(UUID pet_id, String petName, double height, double weight, String color) {
         this.pet_id = pet_id;
         this.petName = petName;
         this.height = height;
@@ -31,11 +33,11 @@ public class Pet {
         this.color = color;
     }
 
-    public Long getPet_id() {
+    public UUID getPet_id() {
         return pet_id;
     }
 
-    public void setPet_id(Long pet_id) {
+    public void setPet_id(UUID pet_id) {
         this.pet_id = pet_id;
     }
 

@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +23,7 @@ class UsersSqlDAOTest {
 
     @BeforeEach
     void setUp() {
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/petpals");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/pet_pals");
         dataSource.setUsername("postgres");
         dataSource.setPassword("postgres1");
         dataSource.setAutoCommit(false);
@@ -51,10 +52,11 @@ class UsersSqlDAOTest {
 
     @Test
     void findAll() {
-        List<User> actual = new ArrayList<>();
-        actual = userDao.findAll();
+        List<User> before = userDao.findAll();
+        boolean newUserCreated = userDao.createNewUser("NewUser", "test", "User", "test", "test", "test@test.com");
+        List<User> after = userDao.findAll();
 
-        assertEquals(1, actual.size());
+        assertEquals(before.size() + 1, after.size());
 
     }
 
@@ -80,7 +82,7 @@ class UsersSqlDAOTest {
     @Test
     void findIdByUsername() {
         List<User> usrList = userDao.findAll();
-        Long actualID = userDao.findIdByUsername(usrList.get(0).getUsername());
+        UUID actualID = userDao.findIdByUsername(usrList.get(0).getUsername());
 
         assertEquals(usrList.get(0).getId(), actualID);
     }
@@ -89,11 +91,11 @@ class UsersSqlDAOTest {
     void createNewUser() {
         List<User> userListBefore = userDao.findAll();
 
-        boolean newUserCreated = userDao.createNewUser("NewUser", "test", "User", "test", "test", "test@test.com");
-        User actual = userDao.findByUsername("NewUser");
+        boolean newUserCreated = userDao.createNewUser("NewUser2", "test1", "User", "test2", "test2", "test2@test.com");
+        User actual = userDao.findByUsername("NewUser2");
 
         assertEquals(true, newUserCreated);
-        assertEquals("NewUser", actual.getUsername());
+        assertEquals("NewUser2", actual.getUsername());
 
         List<User> userListAfter = userDao.findAll();
 

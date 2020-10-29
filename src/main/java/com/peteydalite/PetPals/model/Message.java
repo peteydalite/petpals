@@ -1,18 +1,19 @@
 package com.peteydalite.PetPals.model;
 
 import java.text.DateFormat;
+import java.util.UUID;
 
 public class Message {
-    private Long message_id;
-    private Long user_id;
+    private UUID message_id;
+    private UUID user_id;
     private String description;
-    private Long inReplyToUserId;
-    private Long inReplyToMessageId;
+    private UUID inReplyToUserId;
+    private UUID inReplyToMessageId;
     private DateFormat datetime;
 
     public Message(){}
 
-    public Message(Long message_id, Long user_id, String description, Long inReplyToUserId, Long inReplyToMessageId, DateFormat datetime) {
+    public Message(UUID message_id, UUID user_id, String description, UUID inReplyToUserId, UUID inReplyToMessageId, DateFormat datetime) {
         this.message_id = message_id;
         this.user_id = user_id;
         this.description = description;
@@ -21,19 +22,19 @@ public class Message {
         this.datetime = datetime;
     }
 
-    public Long getMessage_id() {
+    public UUID getMessage_id() {
         return message_id;
     }
 
-    public void setMessage_id(Long message_id) {
+    public void setMessage_id(UUID message_id) {
         this.message_id = message_id;
     }
 
-    public Long getUser_id() {
+    public UUID getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUser_id(UUID user_id) {
         this.user_id = user_id;
     }
 
@@ -45,19 +46,19 @@ public class Message {
         this.description = description;
     }
 
-    public Long getInReplyToUserId() {
+    public UUID getInReplyToUserId() {
         return inReplyToUserId;
     }
 
-    public void setInReplyToUserId(Long inReplyToUserId) {
+    public void setInReplyToUserId(UUID inReplyToUserId) {
         this.inReplyToUserId = inReplyToUserId;
     }
 
-    public Long getInReplyToMessageId() {
+    public UUID getInReplyToMessageId() {
         return inReplyToMessageId;
     }
 
-    public void setInReplyToMessageId(Long inReplyToMessageId) {
+    public void setInReplyToMessageId(UUID inReplyToMessageId) {
         this.inReplyToMessageId = inReplyToMessageId;
     }
 

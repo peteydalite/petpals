@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UsersSqlDAO implements UsersDAO{
@@ -31,7 +32,7 @@ public class UsersSqlDAO implements UsersDAO{
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public User getUserById(UUID userId) {
         String sql = "Select * from Users where user_id = ? ";
         SqlRowSet results = jdbc.queryForRowSet(sql, userId);
         User user = new User();
@@ -53,13 +54,13 @@ public class UsersSqlDAO implements UsersDAO{
     }
 
     @Override
-    public Long findIdByUsername(String username) {
-        Long uID = null;
+    public UUID findIdByUsername(String username) {
+        UUID uID = null;
         String sql = "Select user_id from Users where username = ? ";
         SqlRowSet results = jdbc.queryForRowSet(sql, username);
 
         if(results.next()){
-            uID = results.getLong("user_id");
+            uID = (java.util.UUID)results.getObject("user_id");
         }
 
         return uID;
@@ -70,8 +71,8 @@ public class UsersSqlDAO implements UsersDAO{
         boolean createdUser = false;
 
         //Only create a new user with a unique username
-        Long existingId = this.findIdByUsername(username);
-        if(existingId != null && existingId > 0L){
+        UUID existingId = this.findIdByUsername(username);
+        if(existingId != null){
             return createdUser;
         }
         String sqlInsert = "Insert into users (username, password_hash, role, firstname, lastname, email) values (?,?,?,?,?,?) ";
@@ -94,7 +95,7 @@ public class UsersSqlDAO implements UsersDAO{
 
     private User mapRowToUser( SqlRowSet result){
         User temp = new User();
-        temp.setId(result.getLong("user_id"));
+        temp.setId((java.util.UUID)result.getObject("user_id"));
         temp.setUsername(result.getString("username"));
         temp.setRole(result.getString("role"));
         temp.setFirstName(result.getString("firstname"));

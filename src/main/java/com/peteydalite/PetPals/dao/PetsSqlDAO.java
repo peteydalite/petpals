@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class PetsSqlDAO implements PetsDAO{
 
@@ -30,7 +31,7 @@ public class PetsSqlDAO implements PetsDAO{
     }
 
     @Override
-    public Pet getPetById(Long id) {
+    public Pet getPetById(UUID id) {
         Pet pet = new Pet();
 
         String sql = "Select * from pets where pet_id = ? ";
@@ -89,7 +90,7 @@ public class PetsSqlDAO implements PetsDAO{
 
     private Pet mapRowToPet(SqlRowSet result){
         Pet temp = new Pet();
-        temp.setPet_id(result.getLong("pet_id"));
+        temp.setPet_id((java.util.UUID)result.getObject("pet_id"));
         temp.setPetName(result.getString("petname"));
         temp.setHeight(result.getDouble("height"));
         temp.setWeight(result.getDouble("weight"));

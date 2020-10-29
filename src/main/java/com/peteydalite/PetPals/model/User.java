@@ -1,7 +1,9 @@
 package com.peteydalite.PetPals.model;
 
+import java.util.UUID;
+
 public class User {
-    private Long id;
+    private UUID id;
     private String username;
     private String password;
     private String role;
@@ -13,7 +15,7 @@ public class User {
 
     }
 
-    public User(Long id, String username, String password, String role, String firstName, String lastName, String email) {
+    public User(UUID id, String username, String password, String role, String firstName, String lastName, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -23,11 +25,11 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

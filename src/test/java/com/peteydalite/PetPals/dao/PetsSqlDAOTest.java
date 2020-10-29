@@ -23,7 +23,7 @@ class PetsSqlDAOTest {
 
     @BeforeEach
     void setUp() {
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/petpals");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/pet_pals");
         dataSource.setUsername("postgres");
         dataSource.setPassword("postgres1");
         dataSource.setAutoCommit(false);

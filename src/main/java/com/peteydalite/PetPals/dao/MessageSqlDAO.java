@@ -84,11 +84,11 @@ public class MessageSqlDAO implements MessageDAO {
 
     private Message mapRowToMessage(SqlRowSet result){
         Message temp = new Message();
-        temp.setMessage_id(result.getLong("message_id"));;
-        temp.setUser_id(result.getLong("user_id"));
+        temp.setMessage_id((java.util.UUID)result.getObject("message_id"));;
+        temp.setUser_id((java.util.UUID)result.getObject("user_id"));
         temp.setDescription(result.getString("message_description"));
-        temp.setInReplyToUserId(result.getLong("in_reply_to_userid"));
-        temp.setInReplyToMessageId(result.getLong("in_reply_to_messageid"));
+        temp.setInReplyToUserId((java.util.UUID)result.getObject("in_reply_to_userid"));
+        temp.setInReplyToMessageId((java.util.UUID)result.getObject("in_reply_to_messageid"));
 
         return temp;
     }
