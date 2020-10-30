@@ -10,9 +10,9 @@ public interface MessageDAO {
     List<Message> getAllMessages();
     List<Message> getMessagesByUserId(UUID userId);
     List<Message> getMessagesByUserReply(UUID replayToUserId);
-    List<Message> getMessageByReplyToMessage(UUID replyToMessageId);
+    List<Message> getMessagesByReplyToMessage(UUID replyToMessageId);
     Message getMessageById(UUID messageId);
-    boolean createMessgage(UUID user_id, String message, Optional<UUID> inReplyToUser, Optional<UUID> inReplyToMessage);
+    boolean createMessage(Message newMessage);
     boolean deleteMessage(UUID messageId);
     boolean updateMessage(Message msg);
 

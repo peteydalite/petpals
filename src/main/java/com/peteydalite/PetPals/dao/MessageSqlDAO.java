@@ -3,6 +3,7 @@ package com.peteydalite.PetPals.dao;
 import com.peteydalite.PetPals.model.Message;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import com.peteydalite.PetPals.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class MessageSqlDAO implements MessageDAO {
     }
 
     @Override
-    public List<Message> getMessageByReplyToMessage(UUID replyToMessageId) {
+    public List<Message> getMessagesByReplyToMessage(UUID replyToMessageId) {
         List<Message> messageList = new ArrayList<>();
         String sql = "Select * from messages where in_reply_to_messageid = ? ";
         SqlRowSet result = jdbc.queryForRowSet(sql, replyToMessageId);
@@ -82,11 +83,11 @@ public class MessageSqlDAO implements MessageDAO {
     }
 
     @Override
-    public boolean createMessgage(UUID user_id, String message, Optional<UUID> inReplyToUser, Optional<UUID> inReplyToMessage) {
+    public boolean createMessage(Message newMessage) {
         boolean messageCreated = false;
         String sqlInsert = "Insert into messages (user_id, message_description, in_reply_to_userid, in_reply_to_messageid, datetime) " +
                             "values (?, ?, ?, ?, current_timestamp)";
-        messageCreated = jdbc.update(sqlInsert,user_id, message, inReplyToUser, inReplyToMessage) == 1;
+        messageCreated = jdbc.update(sqlInsert,newMessage.getUser_id(), newMessage.getDescription(), newMessage.getInReplyToUserId(), newMessage.getInReplyToMessageId()) == 1;
 
         return messageCreated;
 
@@ -104,7 +105,7 @@ public class MessageSqlDAO implements MessageDAO {
     @Override
     public boolean updateMessage(Message msg) {
         boolean updated = false;
-        String sqlUpdate = "Update messages set user_id = ?, message_description = ?, in_reply_to_userid = ?, in_replu_to_messageid = ?, datetime = current_timestamp " +
+        String sqlUpdate = "Update messages set user_id = ?, message_description = ?, in_reply_to_userid = ?, in_reply_to_messageid = ?, datetime = current_timestamp " +
                             "where message_id = ? ";
         updated = jdbc.update(sqlUpdate, msg.getUser_id(), msg.getDescription(), msg.getInReplyToUserId(), msg.getInReplyToMessageId(), msg.getMessage_id()) == 1;
         return updated;
