@@ -3,12 +3,14 @@ package com.peteydalite.PetPals.dao;
 import com.peteydalite.PetPals.model.Pet;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class PetsSqlDAO implements PetsDAO{
 
     private JdbcTemplate jdbc = new JdbcTemplate();

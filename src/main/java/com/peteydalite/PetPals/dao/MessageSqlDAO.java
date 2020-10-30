@@ -4,12 +4,14 @@ import com.peteydalite.PetPals.model.Message;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import com.peteydalite.PetPals.model.Message;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class MessageSqlDAO implements MessageDAO {
     private JdbcTemplate jdbc;
 
