@@ -4,13 +4,16 @@ import com.peteydalite.PetPals.model.Message;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MessageDAO {
-    List<Message> getMessagesByUserId(Long userId);
-    List<Message> getMessagesByUserReply(Long replayToUserId);
-    Message getMessageById(Long messageId);
-    boolean createMessgage(Long user_id, String message, Optional<Long> inReplyToUser, Optional<Long> inReplayToMessage);
-    boolean deleteMessage(Long messageId);
+    List<Message> getAllMessages();
+    List<Message> getMessagesByUserId(UUID userId);
+    List<Message> getMessagesByUserReply(UUID replayToUserId);
+    List<Message> getMessageByReplyToMessage(UUID replyToMessageId);
+    Message getMessageById(UUID messageId);
+    boolean createMessgage(UUID user_id, String message, Optional<UUID> inReplyToUser, Optional<UUID> inReplyToMessage);
+    boolean deleteMessage(UUID messageId);
     boolean updateMessage(Message msg);
 
 

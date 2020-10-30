@@ -2,11 +2,11 @@ package com.peteydalite.PetPals.dao;
 
 import com.peteydalite.PetPals.model.User;
 
-import org.junit.AfterClass;
+
 import org.junit.jupiter.api.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
