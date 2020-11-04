@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.security.core.parameters.P;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -58,24 +59,42 @@ public class PhotosSqlDAOTest {
 
     @Test
     public void getAllPhotosForUser() {
-        User user = new User();
-        user.setUsername("test");
-        user.setPassword("tst");
-        user.setFirstName("tst");
-        user.setLastName("tst");
-        user.setRole("TEST");
-        user.setRole("Test");
-        user.setEmail("test@emial.com");
-        userDao.createNewUser(user);
+        User user = userDao.findByUsername("pthong14");
+        List<Photo> photoList = photoDao.getAllPhotosForUser(user.getId());
+        boolean result = photoList.size() >= 1;
+
+        assertEquals(true, result);
 
     }
 
     @Test
     public void getPhotoByID() {
+        User user = userDao.findByUsername("pthong14");
+        List<Photo> photoList = photoDao.getAllPhotosForUser(user.getId());
+        Photo result = photoDao.getPhotoByID(photoList.get(0).getPhoto_id());
+
+        assertEquals(photoList.get(0).getPhoto_id(), result.getPhoto_id());
     }
 
     @Test
     public void getProfilePic() {
+        Photo profpic = new Photo();
+        User usr = userDao.findByUsername("pthong14");
+        profpic.setSrc("my profile pic");
+        profpic.setUserID(usr.getId());
+        profpic.setProfile_picture(true);
+        photoDao.addPhoto(profpic);
+
+        List<Photo> usrPhotos = photoDao.getAllPhotosForUser(usr.getId());
+        for(Photo ph : usrPhotos){
+            if(ph.isProfile_picture()){
+                profpic = ph;
+            }
+        }
+
+        Photo result = photoDao.getProfilePic(usr.getId());
+
+        assertEquals(profpic.getPhoto_id(), result.getPhoto_id());
     }
 
     @Test
@@ -92,7 +111,6 @@ public class PhotosSqlDAOTest {
 
     @Test
     public void deletePhoto() {
-        this.addPhoto();
         Photo toDelete = photoDao.getAllPhotos().get(0);
 
         boolean result = photoDao.deletePhoto(toDelete);
