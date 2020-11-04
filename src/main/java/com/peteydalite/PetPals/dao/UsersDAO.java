@@ -11,7 +11,7 @@ public interface UsersDAO {
     User getUserById(UUID userId);
     User findByUsername(String username);
     UUID findIdByUsername(String username);
-    boolean createNewUser(String username, String password, String role, String firstName, String lastName, String email);
+    boolean createNewUser(User user);
     boolean updateUser(User user);
 
 

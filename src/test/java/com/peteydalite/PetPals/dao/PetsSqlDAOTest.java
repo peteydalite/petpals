@@ -40,8 +40,16 @@ class PetsSqlDAOTest {
         if(userList.size() > 0){
             userID = userList.get(0).getId();
         }else{
-            userDao.createNewUser("NewUser99", "test1", "User", "test99", "test99", "test99@test.com");
-            userID = userDao.findIdByUsername("NewUser99");
+            User user = new User();
+            user.setUsername("NewUser99");
+            user.setPassword("tst");
+            user.setFirstName("tst");
+            user.setLastName("tst");
+            user.setRole("TEST");
+            user.setRole("Test");
+            user.setEmail("test@email.com");
+            userDao.createNewUser(user);
+            userID = userDao.findIdByUsername(user.getUsername());
         }
 
         jdbc.update(sqlInsertTest,userID,"testpuppy");

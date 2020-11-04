@@ -53,7 +53,16 @@ class UsersSqlDAOTest {
     @Test
     void findAll() {
         List<User> before = userDao.findAll();
-        boolean newUserCreated = userDao.createNewUser("NewUser", "test", "User", "test", "test", "test@test.com");
+        User user = new User();
+        user.setUsername("NewUser");
+        user.setPassword("tst");
+        user.setFirstName("tst");
+        user.setLastName("tst");
+        user.setRole("TEST");
+        user.setRole("Test");
+        user.setEmail("test@email");
+
+        boolean newUserCreated = userDao.createNewUser(user);
         List<User> after = userDao.findAll();
 
         assertEquals(before.size() + 1, after.size());
@@ -91,8 +100,16 @@ class UsersSqlDAOTest {
     void createNewUser() {
         List<User> userListBefore = userDao.findAll();
 
-        boolean newUserCreated = userDao.createNewUser("NewUser2", "test1", "User", "test2", "test2", "test2@test.com");
-        User actual = userDao.findByUsername("NewUser2");
+        User user = new User();
+        user.setUsername("NewUser2");
+        user.setPassword("tst");
+        user.setFirstName("tst");
+        user.setLastName("tst");
+        user.setRole("TEST");
+        user.setRole("Test");
+        user.setEmail("test@email.com");
+        boolean newUserCreated = userDao.createNewUser(user);
+        User actual = userDao.findByUsername(user.getUsername());
 
         assertEquals(true, newUserCreated);
         assertEquals("NewUser2", actual.getUsername());

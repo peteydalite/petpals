@@ -32,11 +32,19 @@ public class MessageSqlDAOTest {
 
         userDao = new UsersSqlDAO(jdbc);
 
-       userDao.createNewUser("TEST", "test", "test", "test", "test", "test@email.com");
+        User user = new User();
+        user.setUsername("TEST");
+        user.setPassword("tst");
+        user.setFirstName("tst");
+        user.setLastName("tst");
+        user.setRole("TEST");
+        user.setRole("Test");
+        user.setEmail("test@email.com");
+        userDao.createNewUser(user);
 
-        User user = userDao.findByUsername("TEST");
+        User user2 = userDao.findByUsername(user.getUsername());
         Message testMsg = new Message();
-        testMsg.setUser_id(user.getId());
+        testMsg.setUser_id(user2.getId());
         testMsg.setDescription("This is a test!");
         msgDao.createMessage(testMsg);
 

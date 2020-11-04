@@ -67,19 +67,19 @@ public class UsersSqlDAO implements UsersDAO{
     }
 
     @Override
-    public boolean createNewUser(String username, String password, String role, String firstName, String lastName, String email) {
+    public boolean createNewUser(User user) {
         boolean createdUser = false;
 
         //Only create a new user with a unique username
-        UUID existingId = this.findIdByUsername(username);
+        UUID existingId = this.findIdByUsername(user.getUsername());
         if(existingId != null){
             return createdUser;
         }
         String sqlInsert = "Insert into users (username, password_hash, role, firstname, lastname, email) values (?,?,?,?,?,?) ";
-        String password_hash = new BCryptPasswordEncoder().encode(password);
+        String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
 
 
-        createdUser = jdbc.update(sqlInsert,username, password_hash, role, firstName, lastName, email) == 1;
+        createdUser = jdbc.update(sqlInsert,user.getUsername(), password_hash, user.getRole(), user.getFirstName(), user.getLastName(), user.getEmail()) == 1;
 
         return createdUser;
     }
