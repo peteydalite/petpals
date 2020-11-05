@@ -1,5 +1,6 @@
 package com.peteydalite.PetPals.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.peteydalite.PetPals.model.User;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -15,6 +16,7 @@ public class UsersSqlDAO implements UsersDAO{
 
     private JdbcTemplate jdbc;
 
+    @Autowired
     public UsersSqlDAO(JdbcTemplate jdbcTemplate){
         this.jdbc = jdbcTemplate;
     }

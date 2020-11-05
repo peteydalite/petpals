@@ -1,6 +1,7 @@
 package com.peteydalite.PetPals.dao;
 
 import com.peteydalite.PetPals.model.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,9 @@ import java.util.UUID;
 @Service
 public class PetsSqlDAO implements PetsDAO{
 
-    private JdbcTemplate jdbc = new JdbcTemplate();
+    private JdbcTemplate jdbc;
 
+    @Autowired
     public PetsSqlDAO(JdbcTemplate jdbc){
         this.jdbc = jdbc;
     }

@@ -1,6 +1,7 @@
 package com.peteydalite.PetPals.dao;
 
 import com.peteydalite.PetPals.model.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import com.peteydalite.PetPals.model.Message;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class MessageSqlDAO implements MessageDAO {
     private JdbcTemplate jdbc;
 
+    @Autowired
     public MessageSqlDAO(JdbcTemplate jdbc){
         this.jdbc = jdbc;
     }

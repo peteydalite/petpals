@@ -1,19 +1,22 @@
 package com.peteydalite.PetPals.dao;
 
 import com.peteydalite.PetPals.model.Photo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+@Service
 public class PhotosSqlDAO implements PhotosDAO{
 
     private JdbcTemplate jdbc;
 
+    @Autowired
     public PhotosSqlDAO(JdbcTemplate jdbc){
         this.jdbc = jdbc;
     }
