@@ -25,12 +25,18 @@ public class PetsSqlDAO implements PetsDAO{
     public List<Pet> getAllPets() {
         List<Pet> allPets = new ArrayList<>();
         String sql = "Select * from pets";
-        SqlRowSet result = jdbc.queryForRowSet(sql);
 
-        while(result.next()){
-            Pet pet = mapRowToPet(result);
-            allPets.add(pet);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql);
+
+            while (result.next()) {
+                Pet pet = mapRowToPet(result);
+                allPets.add(pet);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
+
         return allPets;
     }
 
@@ -39,10 +45,15 @@ public class PetsSqlDAO implements PetsDAO{
         Pet pet = new Pet();
 
         String sql = "Select * from pets where pet_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, id);
 
-        if(result.next()){
-            pet = mapRowToPet(result);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, id);
+
+            if (result.next()) {
+                pet = mapRowToPet(result);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return pet;
     }
@@ -51,11 +62,16 @@ public class PetsSqlDAO implements PetsDAO{
     public List<Pet> getPetByName(String petName) {
         List<Pet> petsByName = new ArrayList<>();
         String sql = "Select * from pets where petname = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, petName);
 
-        while(result.next()){
-            Pet pet = mapRowToPet(result);
-            petsByName.add(pet);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, petName);
+
+            while (result.next()) {
+                Pet pet = mapRowToPet(result);
+                petsByName.add(pet);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return petsByName;
     }
@@ -65,8 +81,12 @@ public class PetsSqlDAO implements PetsDAO{
         boolean createdPet = false;
 
         String sqlInsert = "Insert into pets (user_id, petname, height, weight, color) values (?,?,?,?,?) ";
-        createdPet = jdbc.update(sqlInsert, user_id, petName, height, weight, color) == 1;
 
+        try {
+            createdPet = jdbc.update(sqlInsert, user_id, petName, height, weight, color) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return createdPet;
     }
 
@@ -74,11 +94,16 @@ public class PetsSqlDAO implements PetsDAO{
     public List<Pet> getPetsByUserId(UUID userId) {
         List<Pet> petList = new ArrayList<>();
         String sql = "Select * from pets where user_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, userId);
 
-        while(result.next()){
-            Pet pet = mapRowToPet(result);
-            petList.add(pet);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, userId);
+
+            while (result.next()) {
+                Pet pet = mapRowToPet(result);
+                petList.add(pet);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return petList;
     }
@@ -87,8 +112,12 @@ public class PetsSqlDAO implements PetsDAO{
     public boolean updatePet(Pet pet) {
         boolean updated = false;
         String sqlUpdate = "Update pets set petname = ? , height = ?, weight = ?, color = ? where pet_id = ? ";
-        updated = jdbc.update(sqlUpdate, pet.getPetName(), pet.getHeight(), pet.getWeight(), pet.getColor(), pet.getPet_id()) == 1;
 
+        try {
+            updated = jdbc.update(sqlUpdate, pet.getPetName(), pet.getHeight(), pet.getWeight(), pet.getColor(), pet.getPet_id()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return updated;
     }
 
