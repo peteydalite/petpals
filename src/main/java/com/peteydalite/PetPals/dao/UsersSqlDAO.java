@@ -25,10 +25,15 @@ public class UsersSqlDAO implements UsersDAO{
     public List<User> findAll() {
         String sql = "Select * from Users ";
         List<User> users = new ArrayList<>();
-        SqlRowSet results = jdbc.queryForRowSet(sql);
-        while(results.next()){
-            User tempUser = mapRowToUser(results);
-            users.add(tempUser);
+
+        try {
+            SqlRowSet results = jdbc.queryForRowSet(sql);
+            while (results.next()) {
+                User tempUser = mapRowToUser(results);
+                users.add(tempUser);
+            }
+        }catch (Exception e){
+            System.out.println(e);
         }
         return users;
     }
@@ -36,10 +41,14 @@ public class UsersSqlDAO implements UsersDAO{
     @Override
     public User getUserById(UUID userId) {
         String sql = "Select * from Users where user_id = ? ";
-        SqlRowSet results = jdbc.queryForRowSet(sql, userId);
         User user = new User();
-        if(results.next()){
-            user = mapRowToUser(results);
+        try {
+            SqlRowSet results = jdbc.queryForRowSet(sql, userId);
+            if (results.next()) {
+                user = mapRowToUser(results);
+            }
+        }catch (Exception e){
+            System.out.println(e);
         }
         return user;
     }
@@ -48,9 +57,14 @@ public class UsersSqlDAO implements UsersDAO{
     public User findByUsername(String username) {
         User user = new User();
         String sql = "Select * from Users where username = ? ";
-        SqlRowSet results = jdbc.queryForRowSet(sql, username);
-        if(results.next()){
-            user = mapRowToUser(results);
+
+        try {
+            SqlRowSet results = jdbc.queryForRowSet(sql, username);
+            if (results.next()) {
+                user = mapRowToUser(results);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return user;
     }
@@ -59,12 +73,16 @@ public class UsersSqlDAO implements UsersDAO{
     public UUID findIdByUsername(String username) {
         UUID uID = null;
         String sql = "Select user_id from Users where username = ? ";
-        SqlRowSet results = jdbc.queryForRowSet(sql, username);
 
-        if(results.next()){
-            uID = (java.util.UUID)results.getObject("user_id");
+        try {
+            SqlRowSet results = jdbc.queryForRowSet(sql, username);
+
+            if (results.next()) {
+                uID = (java.util.UUID) results.getObject("user_id");
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return uID;
     }
 
@@ -80,9 +98,11 @@ public class UsersSqlDAO implements UsersDAO{
         String sqlInsert = "Insert into users (username, password_hash, role, firstname, lastname, email) values (?,?,?,?,?,?) ";
         String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
 
-
-        createdUser = jdbc.update(sqlInsert,user.getUsername(), password_hash, user.getRole(), user.getFirstName(), user.getLastName(), user.getEmail()) == 1;
-
+        try {
+            createdUser = jdbc.update(sqlInsert, user.getUsername(), password_hash, user.getRole(), user.getFirstName(), user.getLastName(), user.getEmail()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return createdUser;
     }
 
@@ -90,8 +110,12 @@ public class UsersSqlDAO implements UsersDAO{
     public boolean updateUser(User user) {
         boolean updated = false;
         String sqlUpdate = "Update users set username = ?, firstname = ?, lastname = , email = ? where user_id = ? ";
-        updated = jdbc.update(sqlUpdate, user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getId()) == 1;
 
+        try {
+            updated = jdbc.update(sqlUpdate, user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getId()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return updated;
     }
 

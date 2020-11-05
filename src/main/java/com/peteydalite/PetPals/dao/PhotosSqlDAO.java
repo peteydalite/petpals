@@ -35,13 +35,17 @@ public class PhotosSqlDAO implements PhotosDAO{
     public List<Photo> getAllPhotos() {
         List<Photo> photoList = new ArrayList<>();
         String sql = "Select * from photos ";
-        SqlRowSet result = jdbc.queryForRowSet(sql);
 
-        while(result.next()){
-            Photo photo = mapRowToPhoto(result);
-            photoList.add(photo);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql);
+
+            while (result.next()) {
+                Photo photo = mapRowToPhoto(result);
+                photoList.add(photo);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return photoList;
     }
 
@@ -49,13 +53,17 @@ public class PhotosSqlDAO implements PhotosDAO{
     public List<Photo> getAllPhotosForUser(UUID userID) {
         List<Photo> photoList = new ArrayList<>();
         String sql = "Select * from photos where user_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, userID);
 
-        while(result.next()){
-            Photo photo = mapRowToPhoto(result);
-            photoList.add(photo);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, userID);
+
+            while (result.next()) {
+                Photo photo = mapRowToPhoto(result);
+                photoList.add(photo);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return photoList;
     }
 
@@ -63,12 +71,16 @@ public class PhotosSqlDAO implements PhotosDAO{
     public Photo getPhotoByID(UUID photoID) {
         Photo photo = new Photo();
         String sql = "Select * from photos where photo_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, photoID);
 
-        if(result.next()){
-            photo = mapRowToPhoto(result);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, photoID);
+
+            if (result.next()) {
+                photo = mapRowToPhoto(result);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return photo;
     }
 
@@ -76,12 +88,16 @@ public class PhotosSqlDAO implements PhotosDAO{
     public Photo getProfilePic(UUID userID) {
         Photo photo = new Photo();
         String sql = "Select * from photos where user_id = ? and profile_picture = 'true' ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, userID);
 
-        if(result.next()){
-            photo = mapRowToPhoto(result);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, userID);
+
+            if (result.next()) {
+                photo = mapRowToPhoto(result);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return photo;
     }
 
@@ -89,8 +105,11 @@ public class PhotosSqlDAO implements PhotosDAO{
     public boolean addPhoto(Photo newPhoto) {
         boolean added = false;
         String sqlInsert = "Insert into photos (user_id, profile_picture, src) values (?,?,?) ";
-        added = jdbc.update(sqlInsert, newPhoto.getUserID(), newPhoto.isProfile_picture(), newPhoto.getSrc()) == 1;
-
+        try {
+            added = jdbc.update(sqlInsert, newPhoto.getUserID(), newPhoto.isProfile_picture(), newPhoto.getSrc()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return added;
     }
 
@@ -98,8 +117,12 @@ public class PhotosSqlDAO implements PhotosDAO{
     public boolean deletePhoto(Photo photo) {
         boolean deleted = false;
         String sqlDelete = "Delete from photos where photo_id = ? ";
-        deleted = jdbc.update(sqlDelete, photo.getPhoto_id()) == 1;
 
+        try {
+            deleted = jdbc.update(sqlDelete, photo.getPhoto_id()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return deleted;
     }
 }
