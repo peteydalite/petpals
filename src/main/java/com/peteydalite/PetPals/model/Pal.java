@@ -10,6 +10,12 @@ public class Pal {
 
     public Pal(){}
 
+    public Pal(UUID from_user, UUID to_user, Long status_id){
+        this.from_user = from_user;
+        this.to_user = to_user;
+        this.status_id = status_id;
+    }
+
     public Pal(UUID pal_id, UUID from_user, UUID to_user, Long status_id) {
         this.pal_id = pal_id;
         this.from_user = from_user;

@@ -10,6 +10,7 @@ public interface PalDAO {
     List<Pal> getAllPals();
     List<Pal> getUserPals(UUID userID);
     List<Pal> getByStatus(User user, Long status_code);
+    Pal getPalbyID(UUID palID);
     boolean addPal(Pal newPal);
     boolean updatePal(Pal updatePal);
 }

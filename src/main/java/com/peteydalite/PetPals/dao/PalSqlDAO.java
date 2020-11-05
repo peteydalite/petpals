@@ -49,7 +49,7 @@ public class PalSqlDAO implements PalDAO {
     public List<Pal> getUserPals(UUID userID) {
         List<Pal> palList = new ArrayList<>();
         String select = "Select * from pals where from_user = ? or to_user = ? " +
-                        "and status_id = 1 ";
+                        "and status_id = 2 ";
         try {
 
 
@@ -84,6 +84,24 @@ public class PalSqlDAO implements PalDAO {
     }
 
     @Override
+    public Pal getPalbyID(UUID palID) {
+        Pal pal = new Pal();
+        String select = "Select * from pals where pal_id = ? ";
+
+        try{
+            SqlRowSet result = jdbc.queryForRowSet(select, palID);
+
+            if(result.next()){
+                pal = mapRowToPal(result);
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return pal;
+    }
+
+    @Override
     public boolean addPal(Pal newPal) {
         boolean added = false;
 
@@ -103,7 +121,7 @@ public class PalSqlDAO implements PalDAO {
         String update = "Update pals set from_user = ?, to_user = ?, status_id = ? " +
                         "where pal_id = ? ";
         try {
-            updated = jdbc.update(update, updatePal.getFrom_user(), updatePal.getTo_user(), updatePal.getStatus_id(), updatePal.getStatus_id()) == 1;
+            updated = jdbc.update(update, updatePal.getFrom_user(), updatePal.getTo_user(), updatePal.getStatus_id(), updatePal.getPal_id()) == 1;
         }catch(Exception e){
             System.out.println(e);
         }
