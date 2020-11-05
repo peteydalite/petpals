@@ -25,11 +25,15 @@ public class MessageSqlDAO implements MessageDAO {
     public List<Message> getAllMessages() {
         List<Message> msgList = new ArrayList<>();
         String sql = "Select * from messages ";
-        SqlRowSet result = jdbc.queryForRowSet(sql);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql);
 
-        while(result.next()){
-            Message msg = mapRowToMessage(result);
-            msgList.add(msg);
+            while (result.next()) {
+                Message msg = mapRowToMessage(result);
+                msgList.add(msg);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return msgList;
     }
@@ -38,11 +42,16 @@ public class MessageSqlDAO implements MessageDAO {
     public List<Message> getMessagesByUserId(UUID userId) {
         List<Message> messagesByUserId = new ArrayList<>();
         String sql = "Select * from messages where user_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, userId);
 
-        while(result.next()){
-            Message msg = mapRowToMessage(result);
-            messagesByUserId.add(msg);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, userId);
+
+            while (result.next()) {
+                Message msg = mapRowToMessage(result);
+                messagesByUserId.add(msg);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return messagesByUserId;
     }
@@ -51,11 +60,16 @@ public class MessageSqlDAO implements MessageDAO {
     public List<Message> getMessagesByUserReply(UUID replayToUserId) {
         List<Message> messagesByReplay = new ArrayList<>();
         String sql = "Select * from messages where in_reply_to_userid = ?";
-        SqlRowSet result = jdbc.queryForRowSet(sql, replayToUserId);
 
-        while(result.next()) {
-            Message msg = mapRowToMessage(result);
-            messagesByReplay.add(msg);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, replayToUserId);
+
+            while (result.next()) {
+                Message msg = mapRowToMessage(result);
+                messagesByReplay.add(msg);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return messagesByReplay;
     }
@@ -64,13 +78,18 @@ public class MessageSqlDAO implements MessageDAO {
     public List<Message> getMessagesByReplyToMessage(UUID replyToMessageId) {
         List<Message> messageList = new ArrayList<>();
         String sql = "Select * from messages where in_reply_to_messageid = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, replyToMessageId);
 
-        while(result.next()){
-            Message msg = mapRowToMessage(result);
-            messageList.add(msg);
+        try {
+
+            SqlRowSet result = jdbc.queryForRowSet(sql, replyToMessageId);
+
+            while (result.next()) {
+                Message msg = mapRowToMessage(result);
+                messageList.add(msg);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
-
         return messageList;
     }
 
@@ -78,10 +97,15 @@ public class MessageSqlDAO implements MessageDAO {
     public Message getMessageById(UUID messageId) {
         Message msg = new Message();
         String sql = "Select * from messages where message_id = ? ";
-        SqlRowSet result = jdbc.queryForRowSet(sql, messageId);
 
-        if(result.next()){
-            msg = mapRowToMessage(result);
+        try {
+            SqlRowSet result = jdbc.queryForRowSet(sql, messageId);
+
+            if (result.next()) {
+                msg = mapRowToMessage(result);
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
         return msg;
     }
@@ -91,8 +115,11 @@ public class MessageSqlDAO implements MessageDAO {
         boolean messageCreated = false;
         String sqlInsert = "Insert into messages (user_id, message_description, in_reply_to_userid, in_reply_to_messageid, datetime) " +
                             "values (?, ?, ?, ?, current_timestamp)";
-        messageCreated = jdbc.update(sqlInsert,newMessage.getUser_id(), newMessage.getDescription(), newMessage.getInReplyToUserId(), newMessage.getInReplyToMessageId()) == 1;
-
+        try {
+            messageCreated = jdbc.update(sqlInsert, newMessage.getUser_id(), newMessage.getDescription(), newMessage.getInReplyToUserId(), newMessage.getInReplyToMessageId()) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return messageCreated;
 
     }
@@ -102,7 +129,12 @@ public class MessageSqlDAO implements MessageDAO {
         boolean messageDeleted = false;
 
         String sqlDelete = "Delete from messages where message_id = ? ";
-        messageDeleted = jdbc.update(sqlDelete, messageId) == 1;
+
+        try {
+            messageDeleted = jdbc.update(sqlDelete, messageId) == 1;
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return messageDeleted;
     }
 
@@ -111,7 +143,12 @@ public class MessageSqlDAO implements MessageDAO {
         boolean updated = false;
         String sqlUpdate = "Update messages set user_id = ?, message_description = ?, in_reply_to_userid = ?, in_reply_to_messageid = ?, datetime = current_timestamp " +
                             "where message_id = ? ";
-        updated = jdbc.update(sqlUpdate, msg.getUser_id(), msg.getDescription(), msg.getInReplyToUserId(), msg.getInReplyToMessageId(), msg.getMessage_id()) == 1;
+
+        try {
+            updated = jdbc.update(sqlUpdate, msg.getUser_id(), msg.getDescription(), msg.getInReplyToUserId(), msg.getInReplyToMessageId(), msg.getMessage_id()) == 1;
+        }catch (Exception e){
+            System.out.println(e);
+        }
         return updated;
     }
 
