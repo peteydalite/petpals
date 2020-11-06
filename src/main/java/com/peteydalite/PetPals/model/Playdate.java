@@ -1,5 +1,7 @@
 package com.peteydalite.PetPals.model;
 
+import org.postgresql.geometric.PGpoint;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -10,11 +12,11 @@ public class Playdate {
     private UUID from_user;
     private UUID to_user;
     private String set_date;
-    private Object loc;
+    private PGpoint loc;
 
     public Playdate(){}
 
-    public Playdate(long status_id, long confirmation_id, UUID from_user, UUID to_user, String set_date, Object loc) {
+    public Playdate(long status_id, long confirmation_id, UUID from_user, UUID to_user, String set_date, PGpoint loc) {
         this.status_id = status_id;
         this.confirmation_id = confirmation_id;
         this.from_user = from_user;
@@ -23,7 +25,7 @@ public class Playdate {
         this.loc = loc;
     }
 
-    public Playdate(UUID playdate_id, long status_id, long confirmation_id, UUID from_user, UUID to_user, String set_date, Object loc) {
+    public Playdate(UUID playdate_id, long status_id, long confirmation_id, UUID from_user, UUID to_user, String set_date, PGpoint loc) {
         this.playdate_id = playdate_id;
         this.status_id = status_id;
         this.confirmation_id = confirmation_id;
@@ -81,11 +83,25 @@ public class Playdate {
         this.set_date = set_date;
     }
 
-    public Object getLoc() {
+    public PGpoint getLoc() {
         return loc;
     }
 
-    public void setLoc(Object loc) {
+    public void setLoc(PGpoint loc) {
         this.loc = loc;
     }
+
+    @Override
+    public String toString() {
+        return "Playdate{" +
+                "playdate_id=" + playdate_id +
+                ", status_id=" + status_id +
+                ", confirmation_id=" + confirmation_id +
+                ", from_user=" + from_user +
+                ", to_user=" + to_user +
+                ", set_date='" + set_date + '\'' +
+                ", loc=" + loc +
+                '}';
+    }
 }
+

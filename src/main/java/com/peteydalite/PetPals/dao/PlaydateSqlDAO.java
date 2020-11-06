@@ -1,13 +1,15 @@
 package com.peteydalite.PetPals.dao;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.peteydalite.PetPals.model.Playdate;
 import com.peteydalite.PetPals.model.User;
+import org.postgresql.geometric.PGpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +31,7 @@ public class PlaydateSqlDAO implements PlaydateDAO {
         temp.setFrom_user((UUID) rs.getObject("from_user"));
         temp.setTo_user((UUID) rs.getObject("to_user"));
         temp.setSet_date(rs.getString("set_date").trim());
-        temp.setLoc(rs.getObject("loc"));
+        temp.setLoc((PGpoint) rs.getObject("loc"));
 
         return  temp;
     }
@@ -120,10 +122,19 @@ public class PlaydateSqlDAO implements PlaydateDAO {
     @Override
     public boolean addPlaydate(Playdate newPlaydate) {
         boolean added = false;
-        String insert = "insert into playdate (status_id, confrimation_id, from_user, to_user, set_date, loc) "+
+        String insert = "insert into playdate (status_id, confirmation_id, from_user, to_user, set_date, loc) "+
                         "values (1, 1, ?, ?, ?, ?) ";
+        String[] sd = newPlaydate.getSet_date().split("-");
+        LocalDate date = LocalDate.of(Integer.parseInt(sd[0]), Integer.parseInt(sd[1]), Integer.parseInt(sd[2]));
+
         try{
-            added = jdbc.update(insert, newPlaydate.getFrom_user(), newPlaydate.getTo_user(), newPlaydate.getSet_date(), newPlaydate.getLoc()) == 1;
+            added = jdbc.update(con ->{
+                    PreparedStatement ps = con.prepareStatement(insert);
+                    ps.setObject(1, newPlaydate.getFrom_user());
+                    ps.setObject(2, newPlaydate.getTo_user());
+                    ps.setObject(3, date);
+                    ps.setObject(4, newPlaydate.getLoc());
+            return ps; } ) == 1;
         }catch(Exception e){
             System.out.println(e);
         }
@@ -135,9 +146,12 @@ public class PlaydateSqlDAO implements PlaydateDAO {
         boolean updated = false;
         String update = "update playdate set status_id = ?, confirmation_id = ?, from_user = ?, to_user = ?, set_date = ?, loc = ? " +
                         "where playdate_id = ? ";
+
+        String[] sd = updatedPlaydate.getSet_date().split("-");
+        LocalDate date = LocalDate.of(Integer.parseInt(sd[0]), Integer.parseInt(sd[1]), Integer.parseInt(sd[2]));
         try{
             updated = jdbc.update(update, updatedPlaydate.getStatus_id(), updatedPlaydate.getConfirmation_id(), updatedPlaydate.getFrom_user(), updatedPlaydate.getTo_user(),
-                updatedPlaydate.getSet_date(), updatedPlaydate.getLoc(), updatedPlaydate.getPlaydate_id()) == 1;
+                date, updatedPlaydate.getLoc(), updatedPlaydate.getPlaydate_id()) == 1;
         }catch (Exception e){
             System.out.println(e);
         }

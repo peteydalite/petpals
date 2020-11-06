@@ -15,6 +15,15 @@ public class User {
 
     }
 
+    public User(String username, String password, String role, String firstName, String lastName, String email) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public User(UUID id, String username, String password, String role, String firstName, String lastName, String email) {
         this.id = id;
         this.username = username;
