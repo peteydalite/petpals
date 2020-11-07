@@ -69,14 +69,41 @@ public class PlaydateSqlDAOTest {
 
     @Test
     public void getPlaydatesForUser() {
+        User user = userDao.findByUsername("pthong14");
+        User test = userDao.findByUsername("TEST");
+        List<Playdate> before = pdDao.getPlaydatesForUser(test);
+        Playdate pd = new Playdate(1l,1l,test.getId(), user.getId(), "2021-01-02", new PGpoint(1.0,1.0)) ;
+        pdDao.addPlaydate(pd);
+        List<Playdate> res = pdDao.getPlaydatesForUser(test);
+
+        assertEquals(before.size() + 1, res.size());
+
     }
 
     @Test
     public void getPlaydatesForUserByStatus() {
+        User user = userDao.findByUsername("pthong14");
+        List<Playdate> before = pdDao.getPlaydatesForUserByStatus(user, 1l);
+        User test = userDao.findByUsername("TEST");
+        Playdate pd = new Playdate(1l,1l,test.getId(), user.getId(), "2020-02-16", new PGpoint(1.0,1.0)) ;
+        pdDao.addPlaydate(pd);
+
+        List<Playdate> res = pdDao.getPlaydatesForUserByStatus(user, 1l);
+
+        assertEquals(before.size() + 1, res.size());
     }
 
     @Test
     public void getPlaydatesForUserByConfirmation() {
+        User user = userDao.findByUsername("pthong14");
+        List<Playdate> before = pdDao.getPlaydatesForUserByConfirmation(user, 1l);
+        User test = userDao.findByUsername("TEST");
+        Playdate pd = new Playdate(1l,1l,test.getId(), user.getId(), "2020-02-16", new PGpoint(1.0,1.0)) ;
+        pdDao.addPlaydate(pd);
+
+        List<Playdate> res = pdDao.getPlaydatesForUserByConfirmation(user, 1l);
+
+        assertEquals(before.size() + 1, res.size());
     }
 
     @Test
